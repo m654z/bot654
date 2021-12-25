@@ -5,12 +5,8 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-def addText(text, type):
-  if(type == "w"):
-    source = Image.open("assets/wojak.jpg")
-  elif(type == "c"):
-    source = Image.open("assets/chad.jpg")
-  
+def addText(text, path):
+  source = Image.open(path)
   draw = ImageDraw.Draw(source)
 
   # Reduce the font size based on the message length

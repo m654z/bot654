@@ -37,6 +37,8 @@ STR_amogus = """```⠀⠀⠀⡯⡯⡾⠝⠘⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀�
 ⢀⢂⢑⠀⡂⡃⠅⠊⢄⢑⠠⠑⢕⢕⢝⢮⢺⢕⢟⢮⢊⢢⢱⢄⠃⣇⣞⢞⣞⢾
 ⢀⠢⡑⡀⢂⢊⠠⠁⡂⡐⠀⠅⡈⠪⠪⠪⠣⠫⠑⡁⢔⠕⣜⣜⢦⡰⡎⡯⡾⡽```"""
 
+wojak_cmds = ["chad", "wojak", "bigbrain", "brainlet", "mask", "nonsense", "npc", "sotrue", "withered"]
+
 @client.event
 async def on_message(message):
     msg = message.content
@@ -58,40 +60,33 @@ async def on_message(message):
       await message.channel.send('"' + msg + '"? thats kinda cringe bro ngl')
 
     # ----- COMMANDS -----
+	
+	cmd = msg_lower.split(" ")[0]
 
     # BOTSAY
     # !botsay (channel id) (message)
-    if msg_lower.startswith("!botsay"):
+    if cmd == "!botsay":
         msg = msg.split(' ')
         channel = client.get_channel(int(msg[1]))
         await channel.send(' '.join(msg[2:]))
     
     # BOTMUSIC
-    elif msg_lower.startswith("!botmusic"):
+    elif cmd == "!botmusic":
         time.sleep(1)
         await message.channel.send(file=discord.File(r'assets/botmusic.mp3'))
 
     # WOJAK
-    # !wojak (message)
-    elif msg_lower.startswith("!wojak"):
-      if(' ' in msg):
-        # Split the message at the first space and use the
-        # wojak.py module to add the result to an image
-        image = addText(msg.split(' ', 1)[1], "w")
+    elif "!" + cmd in wojak_cmds:
+	  if(' ' in msg):
+	    imagePath = "assets/" + cmd + ".jpg"
+        image = addText(msg.split(' ', 1)[1], imagePath)
         with BytesIO() as binary:
           image.save(binary, 'PNG')
           binary.seek(0)
-          await message.channel.send(file=discord.File(fp=binary, filename="assets/wojak.png"))
-
-    # CHAD
-    # !chad (message)
-    elif msg_lower.startswith("!chad"):
-      if(' ' in msg):
-        image = addText(msg.split(' ', 1)[1], "c")
-        with BytesIO() as binary:
-          image.save(binary, 'PNG')
-          binary.seek(0)
-          await message.channel.send(file=discord.File(fp=binary, filename="assets/wojak.png"))
+          await message.channel.send(file=discord.File(fp=binary, filename=imagePath))
+    
+	elif cmd == "!wojakhelp":
+	  await message.channel.send("```" + '\n'.join(wojak_cmds) + "```")
     
     # BOTQUOTE
     elif msg_lower.startswith("!botquote"):
